@@ -1,0 +1,12 @@
+[
+  {"nombre": "María", "apellido": "Rodríguez"},
+  {"nombre": "Alejandro", "apellido": "Pérez"},
+  {"nombre": "Laura", "apellido": "Gómez"},
+  {"nombre": "Carlos", "apellido": "Sánchez"},
+  {"nombre": "Ana", "apellido": "Martínez"},
+  {"nombre": "Juan", "apellido": "López"},
+  {"nombre": "Gabriela", "apellido": "Fernández"},
+  {"nombre": "Manuel", "apellido": "Torres"},
+  {"nombre": "Beatriz", "apellido": "García"},
+  {"nombre": "Javier", "apellido": "Ramírez"}
+]

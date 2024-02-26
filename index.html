@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LocalStorage Example</title>
+    <script>
+
+        // Al iniciar la pagina, se muestra el historial
+        window.onload = function() {
+            displayHistory();
+        };
+
+        function saveText() {
+            var inputText = document.getElementById("inputText").value;
+            if (inputText.trim() !== "") {
+                var storedText = localStorage.getItem("text");
+                if (storedText) {
+                    storedText += "\n" + inputText;
+                } else {
+                    storedText = inputText;
+                }
+                localStorage.setItem("text", storedText);
+                document.getElementById("inputText").value = "";
+                displayHistory();
+            }
+        }
+
+        function clearText() {
+            localStorage.removeItem("text");
+            displayHistory();
+        }
+
+        // Carga un archivo solicitado en el momento, que contiene un json
+        // los valores de un array asociativo.
+        // En localStorage se guarda la ruta al archivo.
+        // Si la ruta al archivo ya existe, se sobreescribe.
+        // Debajo del boton de archivo se imprime el contenido de todo el array asociativo.
+        function loadFile(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var text = e.target.result;
+                var json = JSON.parse(text);
+                localStorage.setItem("file", JSON.stringify(json));
+                displayFile();
+            };
+            reader.readAsText(file);
+        }
+
+        function displayFile() {
+            var storedFile = localStorage.getItem("file");
+            var fileElement = document.getElementById("file");
+            if (storedFile) {
+                var json = JSON.parse(storedFile);
+                var fileHTML = "<table>";
+                for (var key in json) {
+                    fileHTML += "<tr><td>" + key + "</td><td>" + json[key] + "</td></tr>";
+                }
+                fileHTML += "</table>";
+                fileElement.innerHTML = fileHTML;
+            } else {
+                fileElement.innerHTML = "";
+            }
+        }
+
+        function displayHistory() {
+            var storedText = localStorage.getItem("text");
+            var historyElement = document.getElementById("history");
+            if (storedText) {
+                var lines = storedText.split("\n");
+                var historyHTML = "";
+                for (var i = 0; i < lines.length; i++) {
+                    historyHTML += lines[i] + "<br>";
+                }
+                historyElement.innerHTML = historyHTML;
+            } else {
+                historyElement.innerHTML = "";
+            }
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="inputText" placeholder="Enter text">
+    <button onclick="saveText()">Save</button>
+    <button onclick="clearText()">Clear</button>
+    <br>
+    <div id="history"></div>
+    <br>
+    <input type="file" id="fileInput" accept=".txt" onchange="loadFile(event)">
+    <label for="fileInput">Load File</label>
+</body>
+</html>
+
+
+<!-- quiero que se vea bonito, pero que los estilos en linea esten aqui mismo -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    input[type="text"] {
+        padding: 5px;
+        font-size: 16px;
+    }
+    button {
+        padding: 5px 10px;
+        font-size: 16px;
+    }
+    #history {
+        font-size: 18px;
+    }
+    input[type="file"] {
+        display: none;
+    }
+    label[for="fileInput"] {
+        padding: 5px 10px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
